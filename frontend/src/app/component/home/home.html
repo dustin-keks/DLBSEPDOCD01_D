@@ -1,0 +1,22 @@
+<h1>Studienkurse</h1>
+
+@for (studienkurs of studienkurse(); track studienkurs.id) {
+    <hr>
+    
+    <h2>{{ studienkurs.name }} ({{ studienkurs.kuerzel }})</h2>
+
+    <h3>Tutor:</h3>
+    <p>
+        {{ studienkurs.tutor.name }}, 
+        <a href="mailto:{{ studienkurs.tutor.email }}">
+            {{ studienkurs.tutor.email }}
+        </a>
+    </p>
+
+    <h3>Studenten:</h3>
+    <ul>
+        @for (student of getStudentsByStudienkursId(studienkurs.id); track student.id) {
+            <li>{{ student.name }}</li>
+        }
+    </ul>
+}
