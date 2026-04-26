@@ -11,7 +11,7 @@ jobs:
     permissions:
       packages: write
     steps:
-      - uses: ./.github/actions/checkout-code
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/docker-login
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -24,7 +24,7 @@ jobs:
     permissions:
       packages: write
     steps:
-      - uses: ./.github/actions/checkout-code
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/docker-login
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -37,7 +37,7 @@ jobs:
     permissions:
       packages: write
     steps:
-      - uses: ./.github/actions/checkout-code
+      - uses: actions/checkout@v4
       - name: Create init.sql from secret
         run: echo "${{ secrets.INIT_SQL }}" > database/init.sql
       - uses: ./.github/actions/docker-login
