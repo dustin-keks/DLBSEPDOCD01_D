@@ -6,43 +6,43 @@ on:
       - main
 
 jobs:
-  build-and-push:
+  build-frontend:
     runs-on: ubuntu-latest
-    
     permissions:
-        packages: write
-
+      packages: write
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: ./.github/actions/checkout-code
+      - uses: ./.github/actions/docker-login
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: ./.github/actions/build-and-push
+        with:
+          service: frontend
 
+  build-backend:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    steps:
+      - uses: ./.github/actions/checkout-code
+      - uses: ./.github/actions/docker-login
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: ./.github/actions/build-and-push
+        with:
+          service: backend
+
+  build-database:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    steps:
+      - uses: ./.github/actions/checkout-code
       - name: Create init.sql from secret
         run: echo "${{ secrets.INIT_SQL }}" > database/init.sql
-
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
+      - uses: ./.github/actions/docker-login
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and push frontend image
-        uses: docker/build-push-action@v5
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: ./.github/actions/build-and-push
         with:
-          context: ./frontend
-          push: true
-          tags: ghcr.io/${{ github.repository_owner }}/dlbsepdocd01-frontend:latest
-
-      - name: Build and push backend image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./backend
-          push: true
-          tags: ghcr.io/${{ github.repository_owner }}/dlbsepdocd01-backend:latest
-
-      - name: Build and push database image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./database
-          push: true
-          tags: ghcr.io/${{ github.repository_owner }}/dlbsepdocd01-database:latest
+          service: database

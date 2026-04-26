@@ -1,0 +1,17 @@
+name: Build and Push
+description: Build and push Docker image to GitHub Container Registry
+
+inputs:
+  service:
+    description: Service to build (frontend, backend, database)
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Build and push image
+      uses: docker/build-push-action@v5
+      with:
+        context: ./${{ inputs.service }}
+        push: true
+        tags: ghcr.io/${{ github.repository_owner }}/dlbsepdocd01-${{ inputs.service }}:latest
