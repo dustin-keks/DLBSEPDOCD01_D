@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Studienkurs } from '../model/studienkurs';
 import { Student } from '../model/student';
@@ -10,7 +10,7 @@ import { Student } from '../model/student';
 export class StudienkursService {
   private apiUrl = "http://localhost:8080/api";
 
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   getAllStudienkurse(): Observable<Studienkurs[]> {
     return this.http.get<Studienkurs[]>(`${this.apiUrl}/studienkurse`);

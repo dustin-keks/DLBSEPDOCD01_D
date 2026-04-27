@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Studienkurs } from '../../model/studienkurs';
 import { Student } from '../../model/student';
 import { StudienkursService } from '../../service/studienkurs';

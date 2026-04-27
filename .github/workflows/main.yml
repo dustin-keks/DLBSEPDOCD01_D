@@ -17,6 +17,8 @@ jobs:
         with:
           node-version: 24
       - run: npm ci
+      - name: Run ESLint
+        run: npm run lint
       - name: Run frontend tests
         run: npm test -- --watch=false
 
