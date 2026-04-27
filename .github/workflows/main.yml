@@ -6,8 +6,21 @@ on:
       - main
 
 jobs:
+  test-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - run: npm ci
+      - name: Run frontend tests
+        run: npm test
+        working-directory: frontend
+
   build-frontend:
     runs-on: ubuntu-latest
+    needs: test-frontend
     permissions:
       packages: write
     steps:
@@ -19,8 +32,21 @@ jobs:
         with:
           service: frontend
 
+  test-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          java-version: 26
+          distribution: temurin
+      - name: Run backend tests
+        run: ./mvnw test
+        working-directory: backend
+
   build-backend:
     runs-on: ubuntu-latest
+    needs: test-backend
     permissions:
       packages: write
     steps:
