@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.backend.entity.Student;
 import com.example.backend.repository.StudentRepository;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:30080"})
 @RestController
 @RequestMapping("/api/studenten")
 public class StudentController {

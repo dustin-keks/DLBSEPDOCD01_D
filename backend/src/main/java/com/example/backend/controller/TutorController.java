@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.backend.entity.Tutor;
 import com.example.backend.repository.TutorRepository;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:30080"})
 @RestController
 @RequestMapping("/api/tutoren")
 public class TutorController {
