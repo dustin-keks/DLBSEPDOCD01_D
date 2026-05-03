@@ -46,7 +46,7 @@ describe('Studienkurs', () => {
       expect(result[0].name).toBe('Python programmieren');
     });
 
-    const req = httpMock.expectOne('http://localhost:8080/api/studienkurse');
+    const req = httpMock.expectOne('/api/studienkurse');
     expect(req.request.method).toBe('GET');
     req.flush(mockData);
   });
@@ -72,7 +72,7 @@ describe('Studienkurs', () => {
       expect(result[0].name).toBe('Max Mustermann');
     });
 
-    const req = httpMock.expectOne('http://localhost:8080/api/studenten');
+    const req = httpMock.expectOne('/api/studenten');
     expect(req.request.method).toBe('GET');
     req.flush(mockData);
   });
