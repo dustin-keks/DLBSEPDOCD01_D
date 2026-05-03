@@ -16,6 +16,6 @@ runs:
       with:
         context: ./${{ inputs.service }}
         push: true
-        tags: ghcr.io/${{ github.repository_owner }}/dlbsepdocd01-${{ inputs.service }}:latest
+        tags: ghcr.io/${{ github.repository_owner }}/dlbsepdocd01-${{ inputs.service }}:${{ github.sha }}
         cache-from: type=gha,scope=${{ inputs.service }}
         cache-to: type=gha,mode=max,scope=${{ inputs.service }}
