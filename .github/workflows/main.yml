@@ -82,15 +82,26 @@ jobs:
           service: database
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: [build-frontend, build-backend, build-database]
     environment: production
     steps:
-      - name: Deploy to production
-        run: |
-          echo "Pull images ..."
-          echo "... docker pull ghcr.io/${{ github.repository_owner }}/dlbsepdocd01-frontend:latest"
-          echo "... docker pull ghcr.io/${{ github.repository_owner }}/dlbsepdocd01-backend:latest"
-          echo "... docker pull ghcr.io/${{ github.repository_owner }}/dlbsepdocd01-database:latest"
-          echo "Start services ..."
-          echo "... docker-compose up -d"
+      - uses: actions/checkout@v6
+      - name: Set Kubernetes context
+        uses: Azure/k8s-set-context@v5
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.K8S_CONFIG }}
+      - name: Create database secret
+        run: kubectl create secret generic db-secret --from-literal=DB_NAME="${{ secrets.DB_NAME }}" --from-literal=DB_USER="${{ secrets.DB_USER }}" --from-literal=DB_PASSWORD="${{ secrets.DB_PASSWORD }}" --from-literal=DB_ROOT_PASSWORD="${{ secrets.DB_ROOT_PASSWORD }}" --save-config --dry-run=client -o yaml | kubectl apply -f -
+      - name: Deploy to Kubernetes
+        uses: Azure/k8s-deploy@v6
+        with:
+          manifests: |
+            k8s/database.yaml
+            k8s/backend.yaml
+            k8s/frontend.yaml
+          images: |
+            ghcr.io/${{ github.repository_owner }}/dlbsepdocd01-frontend:latest
+            ghcr.io/${{ github.repository_owner }}/dlbsepdocd01-backend:latest
+            ghcr.io/${{ github.repository_owner }}/dlbsepdocd01-database:latest
