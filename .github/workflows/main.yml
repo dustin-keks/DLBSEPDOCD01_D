@@ -89,7 +89,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Create database secret
-        run: kubectl create secret generic db-secret --from-literal=DB_NAME="${{ secrets.DB_NAME }}" --from-literal=DB_USER="${{ secrets.DB_USER }}" --from-literal=DB_PASSWORD="${{ secrets.DB_PASSWORD }}" --from-literal=DB_ROOT_PASSWORD="${{ secrets.DB_ROOT_PASSWORD }}" --save-config --dry-run=client -o yaml | kubectl apply -f -
+        run: kubectl create secret generic db-secret --from-literal=DB_NAME="${{ secrets.DB_NAME }}" --from-literal=DB_USER="${{ secrets.DB_USER }}" --from-literal=DB_PASSWORD="${{ secrets.DB_PASSWORD }}" --from-literal=DB_ROOT_PASSWORD="${{ secrets.DB_ROOT_PASSWORD }}" --from-literal=SPRING_DATASOURCE_URL="jdbc:mysql://database:3306/${{ secrets.DB_NAME }}" --save-config --dry-run=client -o yaml | kubectl apply -f -
       - name: Deploy to Kubernetes
         run: |
           kubectl apply -f k8s/database.yaml
