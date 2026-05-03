@@ -28,6 +28,7 @@ spec:
       containers:
         - name: database
           image: ghcr.io/dustin-keks/dlbsepdocd01-database:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 3306
           env:
