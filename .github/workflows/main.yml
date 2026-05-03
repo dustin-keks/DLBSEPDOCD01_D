@@ -74,7 +74,9 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Create init.sql from secret
-        run: echo "${{ secrets.INIT_SQL }}" > database/init.sql
+        env:
+          INIT_SQL: ${{ secrets.INIT_SQL }}
+        run: printf '%s' "$INIT_SQL" > database/init.sql
       - uses: ./.github/actions/docker-login
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
