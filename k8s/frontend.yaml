@@ -12,8 +12,6 @@ spec:
       labels:
         app: frontend
     spec:
-      imagePullSecrets:
-        - name: ghcr-secret
       containers:
         - name: frontend
           image: ghcr.io/dustin-keks/dlbsepdocd01-frontend:latest
