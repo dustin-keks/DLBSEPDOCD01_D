@@ -18,6 +18,19 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /api/studenten
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /api/studenten
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+
           env:
             - name: SPRING_DATASOURCE_URL
               valueFrom:
